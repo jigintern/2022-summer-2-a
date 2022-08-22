@@ -3,12 +3,10 @@ import { serveDir } from "https://deno.land/std@0.151.0/http/file_server.ts";
 
 serve(async (req) => {
   const pathname = new URL(req.url).pathname;
-  console.log(pathname);
-
-  if (req.method === "GET" && pathname === "/welcome-message") {
-    return new Response("jigインターンへようこそ！");
-  }
-
+  console.log(Deno.env.toObject())
+  console.log(Deno.env.get("HOST"))
+  if (pathname === '/host') return new Response(Deno.env.get("HOST"));
+  console.log(pathname)
   return serveDir(req, {
     fsRoot: "public",
     urlRoot: "",
