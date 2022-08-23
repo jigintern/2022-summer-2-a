@@ -1,5 +1,6 @@
 frontend/package-lock.json
 frontend/node_modules
+frontend/.env
 
 # Editor directories and files
 .vscode/*
