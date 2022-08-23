@@ -12,4 +12,7 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  esbuild: {
+    logOverride: { 'this-is-undefined-in-esm': 'silent' }
+  }
 });
