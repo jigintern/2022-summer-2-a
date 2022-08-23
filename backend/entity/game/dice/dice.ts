@@ -12,7 +12,7 @@ export class Dice {
     private readonly number: number,
   ) {}
 
-  public static genarate = (name: string): Dice => {
+  public static generate = (name: string): Dice => {
     const min = 1;
     const max = 6;
     return new Dice(name, Math.floor(Math.random() * (max - min) + min));
