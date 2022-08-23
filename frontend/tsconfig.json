@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "~/*": ["public/*"]
+    },
     "jsxImportSource": "@emotion/react",
     "target": "ESNext",
     "types": ["@emotion/react/types/css-prop"],
