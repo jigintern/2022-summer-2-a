@@ -5,8 +5,8 @@ import { WaitParticipants } from "~/entity/wait/participant/waitParticipants.ts"
 
 let participants: WaitParticipants = new WaitParticipants();
 
-const onMessage = (socket: WebSocket, e: MessageEvent<WaitMessage>) => {
-  const message = e.data;
+const onMessage = (socket: WebSocket, e: MessageEvent<string>) => {
+  const message: WaitMessage = JSON.parse(e.data);
   switch (message.type) {
     case "name":
       const name = (message as NameMessage).name;
