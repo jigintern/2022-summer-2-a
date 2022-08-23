@@ -24,7 +24,6 @@ const onMessage = (socket: WebSocket, e: MessageEvent<WaitMessage>) => {
 
 export const handler: Handlers = {
   GET(req: Request, _ctx: HandlerContext) {
-    // const upgrade = req.headers.get("upgrade") || "";
     let response, socket: WebSocket;
     try {
       ({ response, socket } = Deno.upgradeWebSocket(req));
