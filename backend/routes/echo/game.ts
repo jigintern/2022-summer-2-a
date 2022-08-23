@@ -12,7 +12,7 @@ let participants: GameParticipants = new GameParticipants();
 const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
   const data: Roulette = JSON.parse(e.data);
   if (data.type === "roulette") {
-    const dice = Dice.genarate(data.name);
+    const dice = Dice.generate(data.name);
     participants.notify(dice.notification());
     return;
   }

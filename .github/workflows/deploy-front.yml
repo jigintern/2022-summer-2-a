@@ -20,7 +20,7 @@ jobs:
         working-directory: ./frontend
         run: |
           touch .env
-          echo VITE_HOST=${{ secrets.SSH_HOST }} >> .env
+          echo VITE_HOST=${{ secrets.SSH_HOST }} > .env
           cat .env
 
       - name: npm install

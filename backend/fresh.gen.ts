@@ -3,21 +3,19 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import * as $0 from "./routes/[name].tsx";
-import * as $1 from "./routes/api/game/roulette.ts";
-import * as $2 from "./routes/api/joke.ts";
-import * as $3 from "./routes/echo/game.ts";
-import * as $4 from "./routes/echo/wait.ts";
-import * as $5 from "./routes/index.tsx";
+import * as $1 from "./routes/api/joke.ts";
+import * as $2 from "./routes/echo/game.ts";
+import * as $3 from "./routes/echo/wait.ts";
+import * as $4 from "./routes/index.tsx";
 import * as $$0 from "./islands/Counter.tsx";
 
 const manifest = {
   routes: {
     "./routes/[name].tsx": $0,
-    "./routes/api/game/roulette.ts": $1,
-    "./routes/api/joke.ts": $2,
-    "./routes/echo/game.ts": $3,
-    "./routes/echo/wait.ts": $4,
-    "./routes/index.tsx": $5,
+    "./routes/api/joke.ts": $1,
+    "./routes/echo/game.ts": $2,
+    "./routes/echo/wait.ts": $3,
+    "./routes/index.tsx": $4,
   },
   islands: {
     "./islands/Counter.tsx": $$0,
