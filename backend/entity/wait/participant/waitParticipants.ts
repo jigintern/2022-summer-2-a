@@ -6,7 +6,7 @@ export class WaitParticipants {
   ) {}
 
   public start = () => {
-    this.participants.forEach((participant) => participant.start());
+    this.participants.forEach(participant => participant.start());
   };
 
   public joined = (joiner: WaitParticipant): WaitParticipants => {
