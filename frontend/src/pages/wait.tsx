@@ -12,12 +12,14 @@ const Wait = () => {
     }
     console.error("start以外が渡された: " + e.data);
   };
-
+  const [isNameSended, setIsNameSended] = useState<boolean>(false);
   const [name, setName] = useState("");
-
+  const isNameSendible = name !== "";
   const sendName = (): void => {
     new NameMessage(name).send(socket);
+    setIsNameSended(true);
   };
+
   return (
     <>
       <h1>Wait</h1>
@@ -27,7 +29,14 @@ const Wait = () => {
           onChange={(e) => setName(e.target.value)}
           placeholder="名前"
         />
-        <button onClick={sendName}>決定</button>
+        <button
+          style={{
+            pointerEvents: isNameSended || !isNameSendible ? "none" : "auto",
+          }}
+          onClick={sendName}
+        >
+          決定
+        </button>
       </p>
     </>
   );
