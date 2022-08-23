@@ -1,6 +1,4 @@
 import React from "react";
-import { useState } from "react";
-import { css } from "@emotion/react";
 
 const Wait = () => {
   return (
@@ -9,3 +7,5 @@ const Wait = () => {
     </>
   );
 };
+
+export default Wait
