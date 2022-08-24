@@ -38,6 +38,7 @@ const gameDataJSON = (): GameDataJSON => {
     cellCount: cellsData.length,
     cells: cellsData,
     participants: participants.data(),
+    next: participants.next,
   };
 };
 

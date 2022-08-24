@@ -9,7 +9,7 @@ export interface Notifiable {
 export class GameParticipants {
   public constructor(
     private readonly participants: readonly GameParticipant[] = [],
-    private readonly next: number = 0,
+    public readonly next: number = 0,
   ) {}
   public notify = (notification: Notifiable) => {
     const message = JSON.stringify(notification);

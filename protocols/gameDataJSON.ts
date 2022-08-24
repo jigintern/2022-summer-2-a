@@ -3,6 +3,7 @@ export interface GameDataJSON {
   readonly cellCount: number;
   readonly cells: CellData[];
   readonly participants: ParticipantData[];
+  readonly next: number;
 }
 
 export interface CellData {
