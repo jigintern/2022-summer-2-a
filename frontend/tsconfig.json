@@ -3,7 +3,8 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
-      "~/*": ["public/*"]
+      "~/*": ["public/*"],
+      "$protocols/*": ["../protocols/*"],
     },
     "jsxImportSource": "@emotion/react",
     "target": "ESNext",

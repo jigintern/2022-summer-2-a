@@ -4,21 +4,7 @@ import { Cell } from "@/models/game/data/cell";
 import { Location } from "@/models/game/data/location";
 import { GameParticipant } from "@/models/game/data/gameParticipant";
 import { GameData } from "@/models/game/data/gameData";
-
-export interface GameDataJSON {
-  readonly participantCount: number;
-  readonly cellCount: number;
-  readonly cells: {
-    readonly location: number;
-    readonly title: string;
-    readonly description: string;
-  }[];
-  readonly participants: {
-    readonly name: string;
-    readonly location: number;
-    readonly number: number;
-  }[];
-}
+import { GameDataJSON } from "$protocols/gameDataJSON";
 
 export function decodeGameData(json: string): GameData {
   const content: GameDataJSON = JSON.parse(json);
