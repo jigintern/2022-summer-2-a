@@ -3,7 +3,10 @@ import { GameData } from "@/models/game/data/gameData";
 import { css } from "@emotion/react";
 import Piece from "@/conpoments/game/Piece";
 type Props = { data: GameData };
-
+type PiecesType = {
+  color: string;
+  num: number;
+};
 const cellStyle = css`
   width: 60px;
   height: 60px;
@@ -33,14 +36,18 @@ const CellsComponent = ({ data }: Props) => {
     []
   );
   const [num, setNum] = useState<number[]>([0, 3, 3]);
+  const [pieces, setA] = useState<PiecesType[]>([
+    { color: "red", num: 0 },
+    { color: "blue", num: 1 },
+  ]);
   return (
     <>
       <h1>Cell!!!</h1>
       {data.cells.map((cell, index) => {
         return (
           <div css={cellStyle} key={cell.location.location} onClick={showModal}>
-            {num.map((n) => {
-              return index === n ? <Piece color={"#0000ff"} /> : <></>;
+            {pieces.map((item) => {
+              return index === item.num ? <Piece color={item.color} /> : <></>;
             })}
           </div>
         );
