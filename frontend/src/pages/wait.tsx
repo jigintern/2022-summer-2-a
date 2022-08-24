@@ -4,7 +4,10 @@ import { NameMessage } from "@/models/wait/nameMessage";
 
 const Wait = () => {
   const navigate = useNavigate();
-  const socket = new WebSocket(`ws://${import.meta.env.VITE_HOST}/echo/wait`);
+  const wsProtocol = import.meta.env.VITE_PROTOCOL === "secure" ? "wss" : "ws";
+  const socket = new WebSocket(
+    `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/wait`
+  );
   socket.onmessage = (e) => {
     if (e.data === "start") {
       navigate("/game");
@@ -18,6 +21,11 @@ const Wait = () => {
   const sendName = (): void => {
     new NameMessage(name).send(socket);
     setIsNameSended(true);
+  };
+  const [isStartSended, setIsStartSended] = useState<boolean>(false);
+  const sendStart = (): void => {
+    socket.send(JSON.stringify({ type: "start" }));
+    setIsStartSended(true);
   };
 
   return (
@@ -36,6 +44,12 @@ const Wait = () => {
           onClick={sendName}
         >
           決定
+        </button>
+        <button
+          style={{ pointerEvents: isStartSended ? "none" : "auto" }}
+          onClick={sendStart}
+        >
+          START
         </button>
       </p>
     </>
