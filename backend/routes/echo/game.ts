@@ -2,6 +2,9 @@ import { HandlerContext, Handlers } from "$fresh/server.ts";
 import { Dice } from "~/entity/game/dice/dice.ts";
 import { GameParticipant } from "~/entity/game/participant/gameParticipant.ts";
 import { GameParticipants } from "~/entity/game/participant/gameParticipants.ts";
+import { GameDataJSON } from "$protocols/gameDataJSON.ts";
+import { cellsData } from "~/entity/game/assets/data.ts";
+
 interface User {
   type: "roulette" | "name" | "data";
   name: string;
@@ -24,9 +27,19 @@ const onMessageAction = (e: MessageEvent<string>, socket: WebSocket) => {
   console.error("Typeが間違っています");
 };
 
+const gameDataJSON = (): GameDataJSON => {
+  return {
+    participantCount: participants.count,
+    cellCount: cellsData.length,
+    cells: cellsData,
+    participants: participants.data(),
+  };
+};
+
 const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
   onMessageAction(e, socket);
   //データ送信操作
+  socket.send(JSON.stringify(gameDataJSON()));
 };
 
 export const handler: Handlers = {
