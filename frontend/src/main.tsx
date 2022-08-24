@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <Routes>
       <Route path="/" element={<First />} />
       <Route path="/wait" element={<Wait />} />
-        <Route path="/game" element={<Game />}/>
+      <Route path="/game" element={<Game />} />
     </Routes>
   </BrowserRouter>
 );

@@ -1,3 +1,3 @@
-export class ParticipantCount{
-    public constructor(public readonly count:number) {}
+export class ParticipantCount {
+  public constructor(public readonly count: number) {}
 }

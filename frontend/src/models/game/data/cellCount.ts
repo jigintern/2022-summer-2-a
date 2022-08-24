@@ -1,4 +1,3 @@
-export class CellCount{
-    public constructor(public readonly count:number) {
-    }
+export class CellCount {
+  public constructor(public readonly count: number) {}
 }
