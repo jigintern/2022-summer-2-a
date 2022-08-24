@@ -26,11 +26,16 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: canary
+          
+      - name: npm run build
+        working-directory: ./frontend
+        run: npm run build
 
       - name: deno run test
         run: |
           cd backend
           deno test
+          
       - if: always()
         name: Send GitHub Action trigger data to Slack workflow
         id: slack
