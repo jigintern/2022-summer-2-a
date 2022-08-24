@@ -10,7 +10,7 @@ const Game = () => {
     const name = (location.state as {name: string}).name;
     const wsProtocol = import.meta.env.VITE_PROTOCOL === "secure" ? "wss" : "ws";
     const socket = new WebSocket(
-        `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/wait`
+        `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/game`
     );
     socket.onopen = () => {
         socket.send(JSON.stringify({type: "name", name: name}));
