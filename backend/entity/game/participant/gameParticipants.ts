@@ -16,4 +16,8 @@ export class GameParticipants {
   public joined = (participant: GameParticipant): GameParticipants => {
     return new GameParticipants([...this.participants, participant]);
   };
+
+  public participantCount = () => {
+    return this.participants.length;
+  };
 }

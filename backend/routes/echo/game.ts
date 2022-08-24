@@ -2,15 +2,15 @@ import { HandlerContext, Handlers } from "$fresh/server.ts";
 import { Dice } from "~/entity/game/dice/dice.ts";
 import { GameParticipant } from "~/entity/game/participant/gameParticipant.ts";
 import { GameParticipants } from "~/entity/game/participant/gameParticipants.ts";
-interface Roulette {
-  type: "roulette";
+interface User {
+  type: "roulette" | "join" | "data";
   name: string;
 }
 
 let participants: GameParticipants = new GameParticipants();
 
-const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
-  const data: Roulette = JSON.parse(e.data);
+const onMessageAction = (e: MessageEvent<string>, socket: WebSocket) => {
+  const data: User = JSON.parse(e.data);
   if (data.type === "roulette") {
     const dice = Dice.generate(data.name);
     participants.notify(dice.notification());
@@ -22,6 +22,11 @@ const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
     return;
   }
   console.error("Typeが間違っています");
+};
+
+const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
+  onMessageAction(e, socket);
+  //データ送信操作
 };
 
 export const handler: Handlers = {
