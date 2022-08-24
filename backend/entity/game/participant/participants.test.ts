@@ -1,7 +1,7 @@
 import { GameParticipant } from "./gameParticipant.ts";
 import { GameParticipants, Notifiable } from "./gameParticipants.ts";
 import { assertEquals } from "assertion";
-import { Dice } from "../dice/dice.ts"
+import { Dice } from "../dice/dice.ts";
 
 class FakeParticipant extends GameParticipant {
   constructor(
@@ -41,39 +41,43 @@ Deno.test("参加のテスト", () => {
   );
 });
 
-Deno.test('次のターンの名前かどうかの識別テスト', () => {
-  const participants = new GameParticipants([yoichi, kurakke], 1)
-  assertEquals(participants.isNext("Kurakke"), true)
-})
+Deno.test("次のターンの名前かどうかの識別テスト", () => {
+  const participants = new GameParticipants([yoichi, kurakke], 1);
+  assertEquals(participants.isNext("Kurakke"), true);
+});
 
-Deno.test('参加者の人数のテスト', () => {
-  const participants = new GameParticipants([yoichi, kurakke], 1)
+Deno.test("参加者の人数のテスト", () => {
+  const participants = new GameParticipants([yoichi, kurakke], 1);
   assertEquals(participants.count, 2);
-})
+});
 
-Deno.test('移動のテスト', () => {
+Deno.test("移動のテスト", () => {
   const yoichi = new GameParticipant("Yoichi", undefined as any);
   const kurakke = new GameParticipant("Kurakke", undefined as any);
 
-  let participants = new GameParticipants([yoichi, kurakke])
+  let participants = new GameParticipants([yoichi, kurakke]);
 
-  participants = participants.moved(new Dice('Yoichi', 6))
+  participants = participants.moved(new Dice("Yoichi", 6));
 
   assertEquals(
-      JSON.stringify(participants),
-      JSON.stringify( new GameParticipants([
-          new GameParticipant("Yoichi", undefined as any, 6),
+    JSON.stringify(participants),
+    JSON.stringify(
+      new GameParticipants([
+        new GameParticipant("Yoichi", undefined as any, 6),
         kurakke,
-      ], 1))
-  )
+      ], 1),
+    ),
+  );
 
-  participants = participants.moved(new Dice('Kurakke', 1))
+  participants = participants.moved(new Dice("Kurakke", 1));
 
   assertEquals(
-      JSON.stringify(participants),
-      JSON.stringify( new GameParticipants([
+    JSON.stringify(participants),
+    JSON.stringify(
+      new GameParticipants([
         new GameParticipant("Yoichi", undefined as any, 6),
         new GameParticipant("Kurakke", undefined as any, 1),
-      ], 0))
-  )
-})
+      ], 0),
+    ),
+  );
+});

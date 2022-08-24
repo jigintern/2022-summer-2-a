@@ -1,51 +1,25 @@
 import { HandlerContext, Handlers } from "$fresh/server.ts";
-import { Dice } from "~/entity/game/dice/dice.ts";
-import { GameParticipant } from "~/entity/game/participant/gameParticipant.ts";
 import { GameParticipants } from "~/entity/game/participant/gameParticipants.ts";
-import { GameDataJSON } from "$protocols/gameDataJSON.ts";
-import { cellsData } from "~/entity/game/assets/data.ts";
+import { generateGameDataJSON } from "~/entity/game/data/generateGameDataJSON.ts";
+import { gameControlActions } from "../../entity/game/actions/gameControlActionable.ts";
 
-interface User {
-  type: "roulette" | "name" | "data";
+export interface GameControlEvent {
+  type: "roulette" | "name";
   name: string;
 }
 
 let participants: GameParticipants = new GameParticipants();
 
-const onMessageAction = (e: MessageEvent<string>, socket: WebSocket) => {
-  const data: User = JSON.parse(e.data);
-  if (data.type === "roulette") {
-    if (!participants.isNext(data.name)) {
-      console.error("関係ない人がルーレット回した！！");
-      return;
-    }
-    const dice = Dice.generate(data.name);
-    participants.notify(dice.notification());
-    participants = participants.moved(data.name, dice);
-    return;
-  }
-  if (data.type === "name") {
-    const participant = new GameParticipant(data.name, socket);
-    participants = participants.joined(participant);
-    return;
-  }
-  console.error("Typeが間違っています");
-};
-
-const gameDataJSON = (): GameDataJSON => {
-  return {
-    participantCount: participants.count,
-    cellCount: cellsData.length,
-    cells: cellsData,
-    participants: participants.data(),
-    next: participants.next,
-  };
-};
-
 const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
-  onMessageAction(e, socket);
-  //データ送信操作
-  socket.send(JSON.stringify(gameDataJSON()));
+  const event: GameControlEvent = JSON.parse(e.data);
+
+  if (gameControlActions[event.type] === undefined) {
+    console.error("Typeが間違っています", event);
+    return;
+  }
+
+  participants = gameControlActions[event.type]!(event, participants, socket);
+  socket.send(JSON.stringify(generateGameDataJSON(participants)));
 };
 
 export const handler: Handlers = {
