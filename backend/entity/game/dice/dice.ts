@@ -9,7 +9,7 @@ interface DiceNotification extends Notifiable {
 export class Dice {
   public constructor(
     private readonly name: string,
-    private readonly number: number,
+    public readonly number: number,
   ) {}
 
   public static generate = (name: string): Dice => {

@@ -15,8 +15,13 @@ let participants: GameParticipants = new GameParticipants();
 const onMessageAction = (e: MessageEvent<string>, socket: WebSocket) => {
   const data: User = JSON.parse(e.data);
   if (data.type === "roulette") {
+    if (!participants.isNext(data.name)) {
+      console.error("関係ない人がルーレット回した！！");
+      return;
+    }
     const dice = Dice.generate(data.name);
     participants.notify(dice.notification());
+    participants = participants.moved(data.name, dice);
     return;
   }
   if (data.type === "name") {
