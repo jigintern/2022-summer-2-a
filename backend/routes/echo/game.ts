@@ -19,7 +19,7 @@ const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
   }
 
   participants = gameControlActions[event.type]!(event, participants, socket);
-  socket.send(JSON.stringify(generateGameDataJSON(participants)));
+  participants.sendGameData(generateGameDataJSON(participants));
 };
 
 export const handler: Handlers = {

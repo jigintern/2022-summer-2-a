@@ -1,3 +1,4 @@
+import { GameDataJSON } from "$protocols/gameDataJSON.ts";
 import { GameParticipant } from "./gameParticipant.ts";
 import { ParticipantData } from "$protocols/gameDataJSON.ts";
 import { Dice } from "../dice/dice.ts";
@@ -14,6 +15,12 @@ export class GameParticipants {
   public notify = (notification: Notifiable) => {
     const message = JSON.stringify(notification);
     this.participants.forEach((participant) => participant.send(message));
+  };
+
+  public sendGameData = (data: GameDataJSON): void => {
+    this.participants.forEach((participant) =>
+      participant.send(JSON.stringify(data))
+    );
   };
 
   public joined = (participant: GameParticipant): GameParticipants => {
