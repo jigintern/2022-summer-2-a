@@ -28,10 +28,10 @@ export class GameParticipants {
     return this.participants[this.next].isName(name);
   };
 
-  public moved = (name: string, dice: Dice): GameParticipants => {
+  public moved = (dice: Dice): GameParticipants => {
     return new GameParticipants(
       this.participants.map((participant) => {
-        if (!participant.isName(name)) return participant;
+        if (!participant.isName(dice.name)) return participant;
         return participant.moved(dice);
       }),
       this.nextNumber(),
