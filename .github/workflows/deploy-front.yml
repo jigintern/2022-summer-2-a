@@ -21,6 +21,7 @@ jobs:
         run: |
           touch .env
           echo VITE_HOST=${{ secrets.SSH_HOST }} > .env
+          echo VITE_PROTOCOL=secure >> .env
           cat .env
 
       - name: npm install
