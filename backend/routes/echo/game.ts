@@ -3,7 +3,7 @@ import { Dice } from "~/entity/game/dice/dice.ts";
 import { GameParticipant } from "~/entity/game/participant/gameParticipant.ts";
 import { GameParticipants } from "~/entity/game/participant/gameParticipants.ts";
 interface User {
-  type: "roulette" | "join" | "data";
+  type: "roulette" | "name" | "data";
   name: string;
 }
 
@@ -16,7 +16,7 @@ const onMessageAction = (e: MessageEvent<string>, socket: WebSocket) => {
     participants.notify(dice.notification());
     return;
   }
-  if (data.type === "join") {
+  if (data.type === "name") {
     const participant = new GameParticipant(data.name, socket);
     participants = participants.joined(participant);
     return;

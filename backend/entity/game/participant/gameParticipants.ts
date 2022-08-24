@@ -1,4 +1,5 @@
 import { GameParticipant } from "./gameParticipant.ts";
+import { ParticipantData } from "$protocols/gameDataJSON.ts";
 
 export interface Notifiable {
   type: string;
@@ -6,7 +7,7 @@ export interface Notifiable {
 
 export class GameParticipants {
   public constructor(
-    private readonly participants: GameParticipant[] = [],
+    private readonly participants: readonly GameParticipant[] = [],
   ) {}
   public notify = (notification: Notifiable) => {
     const message = JSON.stringify(notification);
@@ -17,7 +18,13 @@ export class GameParticipants {
     return new GameParticipants([...this.participants, participant]);
   };
 
-  public participantCount = () => {
+  public get count() {
     return this.participants.length;
+  }
+
+  public data = (): ParticipantData[] => {
+    return this.participants.map((participant, index) => {
+      return participant.data(index);
+    });
   };
 }
