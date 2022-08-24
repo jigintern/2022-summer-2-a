@@ -1,9 +1,12 @@
-import React, {useCallback, useRef, useState} from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { GameData } from "@/models/game/data/gameData";
 import { css } from "@emotion/react";
-
+import Piece from "@/components/game/Piece";
 type Props = { data: GameData };
-
+type PiecesType = {
+  color: string;
+  num: number;
+};
 const cellStyle = css`
   width: 60px;
   height: 60px;
@@ -24,21 +27,33 @@ const CellsComponent = ({ data }: Props) => {
         }
     }, []);
 
-    const closeModal = useCallback(() => {
-        if (ref.current) {
-            ref.current.close();
-        }
-    }, []);
+  const closeModal = useCallback(() => {
+    if (ref.current) {
+      ref.current.close();
+    }
+  }, []);
 
-    const stopPagination = useCallback((e:React.MouseEvent<HTMLDivElement,MouseEvent>)=> {
-        e.stopPropagation()
-    }, [])
-
-    return (
+  const stopPagination = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      e.stopPropagation();
+    },
+    []
+  );
+  const [pieces, setA] = useState<PiecesType[]>([
+    { color: "red", num: 3 },
+    { color: "#00ff00", num: 0 },
+  ]);
+  return (
     <>
       <h1>Cell!!!</h1>
-      {data.cells.map((cell) => {
-        return <div css={cellStyle} key={cell.location.location} onClick={() => showModal(cell.title, cell.description)} />;
+      {data.cells.map((cell, index) => {
+        return (
+          <div css={cellStyle} key={cell.location.location} onClick={() => showModal(cell.title, cell.description)}>
+            {pieces.map((item) => {
+              return index === item.num ? <Piece color={item.color} /> : <></>;
+            })}
+          </div>
+        );
       })}
         <dialog ref={ref} onClick={closeModal}>
             <div onClick={stopPagination}>

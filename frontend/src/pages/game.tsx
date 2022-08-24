@@ -1,5 +1,5 @@
 import React　from "react";
-import CellsComponent from "@/conponents/game/cellsComponent";
+import CellsComponent from "@/components/game/cellsComponent";
 import {GameData} from "@/models/game/data/gameData";
 import {Cell} from "@/models/game/data/cell";
 import {Location} from "@/models/game/data/location";
