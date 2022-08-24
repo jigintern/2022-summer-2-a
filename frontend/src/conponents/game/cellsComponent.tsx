@@ -1,4 +1,4 @@
-import React, {useCallback, useRef} from "react";
+import React, {useCallback, useRef, useState} from "react";
 import { GameData } from "@/models/game/data/gameData";
 import { css } from "@emotion/react";
 
@@ -11,11 +11,14 @@ const cellStyle = css`
   border: 1px solid black;
 `;
 
-
 const CellsComponent = ({ data }: Props) => {
     const ref: React.MutableRefObject<HTMLDialogElement | null> = useRef(null);
+    const [title, setTitle] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
 
-    const showModal = useCallback(() => {
+    const showModal = useCallback((title: string, description: string) => {
+        setTitle(title);
+        setDescription(description);
         if (ref.current) {
             ref.current.showModal();
         }
@@ -35,13 +38,13 @@ const CellsComponent = ({ data }: Props) => {
     <>
       <h1>Cell!!!</h1>
       {data.cells.map((cell) => {
-        return <div css={cellStyle} key={cell.location.location} onClick={showModal} />;
+        return <div css={cellStyle} key={cell.location.location} onClick={() => showModal(cell.title, cell.description)} />;
       })}
         <dialog ref={ref} onClick={closeModal}>
-          <div onClick={stopPagination}>
-              <h2>title</h2>
-              <p>description</p>
-          </div>
+            <div onClick={stopPagination}>
+                <h2>{title}</h2>
+                <p>{description}</p>
+            </div>
         </dialog>
     </>
   );
