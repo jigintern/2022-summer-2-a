@@ -19,6 +19,11 @@ const Wait = () => {
     new NameMessage(name).send(socket);
     setIsNameSended(true);
   };
+  const [isStartSended, setIsStartSended] = useState<boolean>(false);
+  const sendStart = (): void => {
+    socket.send(JSON.stringify({type:"start"}));
+    setIsStartSended(true);
+  };
 
   return (
     <>
@@ -36,6 +41,9 @@ const Wait = () => {
           onClick={sendName}
         >
           決定
+        </button>
+        <button style={{pointerEvents: isStartSended ? "none" : "auto"}} onClick={sendStart}>
+          START
         </button>
       </p>
     </>
