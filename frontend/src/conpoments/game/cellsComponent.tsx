@@ -35,10 +35,9 @@ const CellsComponent = ({ data }: Props) => {
     },
     []
   );
-  const [num, setNum] = useState<number[]>([0, 3, 3]);
   const [pieces, setA] = useState<PiecesType[]>([
-    { color: "red", num: 0 },
-    { color: "blue", num: 1 },
+    { color: "red", num: 3 },
+    { color: "#00ff00", num: 0 },
   ]);
   return (
     <>
