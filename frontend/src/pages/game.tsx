@@ -28,7 +28,8 @@ const Game = () => {
         new GameParticipant("kurakke", new Location(0), 0),
         new GameParticipant("yoichi", new Location(1), 1),
       ],
-      0
+      0,
+        [],
     )
   );
   const socket = useRef<WebSocket>(undefined as any);
@@ -52,8 +53,9 @@ const Game = () => {
     };
   }, []);
   useEffect(() => {
+      console.log("ranks", data.ranks)
     if (data.nextName() === null) {
-      navigate("/rank");
+      navigate("/rank", { state: { ranks: data.ranks } });
       return;
     }
     setNextName(data.nextName()!);

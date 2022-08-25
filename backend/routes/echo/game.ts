@@ -20,8 +20,10 @@ const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
   }
 
   const nextParticipants = gameControlActions[event.type]!(event, participants, socket);
-  ranks = ranks.concat(nextParticipants.newGoaledNames(participants, cellData.length));
-  participants.sendGameData(generateGameDataJSON(participants));
+  ranks = ranks.concat(nextParticipants.newGoaledNames(participants, cellsData.length - 1))
+  participants = nextParticipants;;
+  console.log(ranks)
+  participants.sendGameData(generateGameDataJSON(participants, ranks));
 };
 
 export const handler: Handlers = {

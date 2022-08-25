@@ -20,7 +20,8 @@ const data1 = new GameData(
     new GameParticipant("kurakke", new Location(0), 0),
     new GameParticipant("yoichi", new Location(0), 1),
   ],
-  0
+  0,
+    [],
 );
 
 const data2 = new GameData(
@@ -37,7 +38,8 @@ const data2 = new GameData(
     new GameParticipant("kurakke", new Location(0), 0),
     new GameParticipant("yoichi", new Location(1), 1),
   ],
-  1
+  1,
+    [],
 );
 describe("gamedataのテスト", () => {
   test("次の人の名前のテスト", () => {

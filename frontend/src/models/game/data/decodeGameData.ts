@@ -17,6 +17,7 @@ export function decodeGameData(json: string): GameData {
     content.participants.map(({ name, location, number }) => {
       return new GameParticipant(name, new Location(location), number);
     }),
-    content.next
+    content.next,
+      content.ranks,
   );
 }

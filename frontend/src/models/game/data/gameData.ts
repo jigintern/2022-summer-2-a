@@ -10,7 +10,8 @@ export class GameData {
     public cellCount: CellCount,
     public cells: Cell[],
     public participants: GameParticipant[],
-    public next: number
+    public next: number,
+    public ranks: readonly string[],
   ) {}
   public nextName = ():string | null => {
     if (this.next === -1) return null;
