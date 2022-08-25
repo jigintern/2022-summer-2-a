@@ -57,7 +57,7 @@ Deno.test("移動のテスト", () => {
 
   let participants = new GameParticipants([yoichi, kurakke]);
 
-  participants = participants.moved(new Dice("Yoichi", 6));
+  participants = participants.moved(new Dice("Yoichi", 6), 10);
 
   assertEquals(
     JSON.stringify(participants),
@@ -69,7 +69,7 @@ Deno.test("移動のテスト", () => {
     ),
   );
 
-  participants = participants.moved(new Dice("Kurakke", 1));
+  participants = participants.moved(new Dice("Kurakke", 1), 10);
 
   assertEquals(
     JSON.stringify(participants),
@@ -80,4 +80,28 @@ Deno.test("移動のテスト", () => {
       ], 0),
     ),
   );
+
+  participants = participants.moved(new Dice("Yoichi", 6), 10);
+
+  assertEquals(
+      JSON.stringify(participants),
+      JSON.stringify(
+          new GameParticipants([
+            new GameParticipant("Yoichi", undefined as any, 10),
+            new GameParticipant("Kurakke", undefined as any, 1),
+          ], 1),
+      ),
+  );
+
+    participants = participants.moved(new Dice("Kurakke", 6), 10);
+
+    assertEquals(
+        JSON.stringify(participants),
+        JSON.stringify(
+            new GameParticipants([
+                new GameParticipant("Yoichi", undefined as any, 10),
+                new GameParticipant("Kurakke", undefined as any, 7),
+            ], 1),
+        ),
+    );
 });

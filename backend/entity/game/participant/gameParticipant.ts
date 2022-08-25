@@ -21,11 +21,11 @@ export class GameParticipant {
     return this.name === name;
   };
 
-  public moved = (dice: Dice): GameParticipant => {
+  public moved = (dice: Dice, maxCellCount: number): GameParticipant => {
     return new GameParticipant(
       this.name,
       this.socket,
-      this.location + dice.number,
+      Math.min(maxCellCount, this.location + dice.number),
     );
   };
 
@@ -36,4 +36,8 @@ export class GameParticipant {
       number: index,
     };
   };
+
+  public isGoaled = (maxCellCount: number): boolean => {
+    return true;
+  }
 }

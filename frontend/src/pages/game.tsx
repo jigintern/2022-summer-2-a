@@ -45,6 +45,7 @@ const Game = () => {
       const data = JSON.parse(e.data);
       if (data.type === "roulette") {
         setRouletteText(`${data.name}さんが${data.number}を出しました。`);
+        return;
       }
       setData(decodeGameData(e.data));
     };

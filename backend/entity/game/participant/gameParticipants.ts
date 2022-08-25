@@ -35,11 +35,11 @@ export class GameParticipants {
     return this.participants[this.next].isName(name);
   };
 
-  public moved = (dice: Dice): GameParticipants => {
+  public moved = (dice: Dice, maxCellCount: number): GameParticipants => {
     return new GameParticipants(
       this.participants.map((participant) => {
         if (!participant.isName(dice.name)) return participant;
-        return participant.moved(dice);
+        return participant.moved(dice, maxCellCount);
       }),
       this.nextNumber(),
     );
