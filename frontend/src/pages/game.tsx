@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import CellsComponent from "@/components/game/cellsComponent";
 import { GameData } from "@/models/game/data/gameData";
 import { Cell } from "@/models/game/data/cell";
@@ -30,7 +30,7 @@ const Game = () => {
       0
     )
   );
-  let socket:WebSocket
+  const socket = useRef()
   useEffect(() => {
     const wsProtocol =
       import.meta.env.VITE_PROTOCOL === "secure" ? "wss" : "ws";
@@ -47,17 +47,21 @@ const Game = () => {
     };
   }, []);
   const spinRoulette = () => {
-      const message = {
-          type: "roulette",
-          name,
-      }
-      socket.send(JSON.stringify(message))
-  }
+    console.log(socket);
+
+    const message = {
+      type: "roulette",
+      name,
+    };
+    socket.send(JSON.stringify(message));
+  };
   return (
     <>
       <h1>game!!!</h1>
       <p>{data.nextName()}</p>
-        <p><button onClick={spinRoulette}>ルーレットを回す</button></p>
+      <p>
+        <button onClick={spinRoulette}>ルーレットを回す</button>
+      </p>
       <CellsComponent data={data} />
     </>
   );
