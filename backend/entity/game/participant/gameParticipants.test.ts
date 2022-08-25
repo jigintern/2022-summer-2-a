@@ -105,3 +105,13 @@ Deno.test("移動のテスト", () => {
         ),
     );
 });
+
+Deno.test('新しくゴールした人の名前', () => {
+    const participants = new GameParticipants([yoichi, kurakke]);
+    const goaledParticipants = participants.moved(new Dice("Yoichi", 6), 5);
+
+    assertEquals(
+        JSON.stringify(goaledParticipants.newGoaledName(participants)),
+        JSON.stringify(["Yoichi"]),
+    );
+})
