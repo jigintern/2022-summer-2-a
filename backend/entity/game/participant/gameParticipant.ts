@@ -9,8 +9,13 @@ export class GameParticipant {
   ) {}
 
   public send = (message: string) => {
+    if(! this.isSendable()) return
     this.socket.send(message);
   };
+
+  private isSendable = () => this.socket.readyState === 1
+
+
 
   public isName = (name: string) => {
     return this.name === name;
