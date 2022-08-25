@@ -50,7 +50,7 @@ const CellsComponent = ({ data }: Props) => {
         return (
           <div css={cellStyle} key={cell.location.location} onClick={() => showModal(cell.title, cell.description)}>
             {pieces.map((item) => {
-              return index === item.num ? <Piece color={item.color} /> : <></>;
+              return index === item.num ? <Piece color={item.color} key={item.num} /> : <></>;
             })}
           </div>
         );

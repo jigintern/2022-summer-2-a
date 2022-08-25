@@ -1,9 +1,13 @@
-import React　from "react";
+import React, {useState} from "react";
 import CellsComponent from "@/components/game/cellsComponent";
 import {GameData} from "@/models/game/data/gameData";
 import {Cell} from "@/models/game/data/cell";
 import {Location} from "@/models/game/data/location";
 import {useLocation} from "react-router-dom";
+import {decodeGameData} from "@/models/game/data/decodeGameData";
+import {ParticipantCount} from "@/models/game/data/participantCount";
+import {CellCount} from "@/models/game/data/cellCount";
+import {GameParticipant} from "@/models/game/data/gameParticipant";
 
 const Game = () => {
     const location = useLocation();
@@ -15,9 +19,9 @@ const Game = () => {
     socket.onopen = () => {
         socket.send(JSON.stringify({type: "name", name: name}));
     }
-    const data = new GameData(
-        undefined as any,
-        undefined as any,
+    const [data, setData] = useState<GameData>(new GameData(
+        new ParticipantCount(2),
+        new CellCount(5),
         [
             new Cell('aaa', new Location(0), 'bbbb'),
             new Cell('ccc', new Location(1), 'cccc'),
@@ -25,8 +29,12 @@ const Game = () => {
             new Cell('eee', new Location(3), 'ffff'),
             new Cell('ggg', new Location(4), 'zzzz'),
         ],
-        undefined as any
-    )
+        [new GameParticipant("kurakke", new Location(0), 0),
+        new GameParticipant("yoichi", new Location(1), 1)]
+    ));
+    socket.onmessage = (e) => {
+        setData(decodeGameData(e.data))
+    }
     return (
         <>
             <h1>game!!!</h1>
