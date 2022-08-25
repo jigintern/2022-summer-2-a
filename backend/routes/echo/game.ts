@@ -12,7 +12,6 @@ let participants: GameParticipants = new GameParticipants();
 
 const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
   const event: GameControlEvent = JSON.parse(e.data);
-  console.log(event)
 
   if (gameControlActions[event.type] === undefined) {
     console.error("Typeが間違っています", event);
