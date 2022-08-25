@@ -38,6 +38,6 @@ export class GameParticipant {
   };
 
   public isGoaled = (maxCellCount: number): boolean => {
-    return true;
+    return this.location >= maxCellCount;
   }
 }

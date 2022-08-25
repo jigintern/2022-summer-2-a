@@ -38,14 +38,24 @@ Deno.test("ゴールした時のテスト", () => {
     );
 });
 
-Deno.test("ゴールしてるかどうかのテスト", ()=>{
+Deno.test("ゴールしていないときのテスト", ()=> {
+    const participant = new GameParticipant("Yamamoto", undefined as any, 19);
+    assertEquals(
+        participant.isGoaled(20),
+        false
+    );
+});
+Deno.test("ゴールぴったりのときのテスト", ()=> {
     const participant = new GameParticipant("Yamamoto", undefined as any, 19);
     assertEquals(
         participant.isGoaled(19),
         true
     );
+});
+Deno.test("ゴールをオーバーしているときのテスト", ()=> {
+    const participant = new GameParticipant("Yamamoto", undefined as any, 19);
     assertEquals(
         participant.isGoaled(18),
-        false
+        true
     );
-})
+});
