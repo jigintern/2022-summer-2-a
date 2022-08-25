@@ -48,10 +48,10 @@ describe("gamedataのテスト", () => {
   });
 
   test("data1の0番地の人たちのテスト", () => {
-    expect(data1.hereParticipants(new Location(0))).toStrictEqual([
+    expect(JSON.stringify(data1.hereParticipants(new Location(0)))).toBe(JSON.stringify([
       new GameParticipant("kurakke", new Location(0), 0),
       new GameParticipant("yoichi", new Location(0), 1),
-    ]);
+    ]));
   });
   test("data1の1番地の人たちのテスト", () => {
     expect(data1.hereParticipants(new Location(1))).toStrictEqual([]);

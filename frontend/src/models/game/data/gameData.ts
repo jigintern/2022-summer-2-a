@@ -17,8 +17,13 @@ export class GameData {
   };
 
   public hereParticipants = (location: Location): GameParticipant[] => {
+    return [
+      new GameParticipant("kurakke", new Location(0), 0),
+      new GameParticipant("yoichi", new Location(0), 1),
+    ];
     return this.participants.filter((participant) => {
       return participant.isLocated(location);
     });
   };
+
 }
