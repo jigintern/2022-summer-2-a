@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CellsComponent from "@/components/game/cellsComponent";
 import { GameData } from "@/models/game/data/gameData";
 import { Cell } from "@/models/game/data/cell";
@@ -13,7 +13,7 @@ const Game = () => {
   const location = useLocation();
   const name = (location.state as { name: string }).name;
   const wsProtocol = import.meta.env.VITE_PROTOCOL === "secure" ? "wss" : "ws";
-  const socket = new WebSocket(
+  let socket: WebSocket = new WebSocket(
     `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/game`
   );
   socket.onopen = () => {
@@ -41,6 +41,7 @@ const Game = () => {
     console.log(A);
     setData(decodeGameData(e.data));
   };
+  useEffect(() => {}, []);
   return (
     <>
       <h1>game!!!</h1>
