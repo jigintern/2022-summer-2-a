@@ -10,7 +10,7 @@ const Wait = () => {
   );
   socket.onmessage = (e) => {
     if (e.data === "start") {
-      navigate("/game", {state: {name: name}});
+      navigate("/game", { state: { name: name } });
       return;
     }
     console.error("start以外が渡された: " + e.data);

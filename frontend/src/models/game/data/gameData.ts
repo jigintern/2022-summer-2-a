@@ -12,7 +12,8 @@ export class GameData {
     public participants: GameParticipant[],
     public next: number
   ) {}
-  public nextName = () => {
+  public nextName = ():string | null => {
+    if (this.next === -1) return null;
     return this.participants[this.next].name;
   };
 

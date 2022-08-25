@@ -3,7 +3,7 @@ import CellsComponent from "@/components/game/cellsComponent";
 import { GameData } from "@/models/game/data/gameData";
 import { Cell } from "@/models/game/data/cell";
 import { Location } from "@/models/game/data/location";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { decodeGameData } from "@/models/game/data/decodeGameData";
 import { ParticipantCount } from "@/models/game/data/participantCount";
 import { CellCount } from "@/models/game/data/cellCount";
@@ -12,6 +12,7 @@ import { GameParticipant } from "@/models/game/data/gameParticipant";
 const Game = () => {
   const location = useLocation();
   const name = (location.state as { name: string }).name;
+  const navigate = useNavigate();
   const [data, setData] = useState<GameData>(
     new GameData(
       new ParticipantCount(2),
@@ -50,6 +51,13 @@ const Game = () => {
       setData(decodeGameData(e.data));
     };
   }, []);
+  useEffect(() => {
+    if (data.nextName() === null) {
+      navigate("/rank");
+      return;
+    }
+    setNextName(data.nextName()!);
+  }, [data]);
   const spinRoulette = () => {
     const message = {
       type: "roulette",
@@ -57,11 +65,13 @@ const Game = () => {
     };
     socket.current.send(JSON.stringify(message));
   };
+  const [nextName, setNextName] = useState<string>("");
+
   return (
     <>
       <h1>game!!!</h1>
-      <p>{data.nextName()}</p>
-      {name === data.nextName() ? (
+      <p>{nextName}</p>
+      {name === nextName ? (
         <p>
           <button onClick={spinRoulette}>ルーレットを回す</button>
         </p>
