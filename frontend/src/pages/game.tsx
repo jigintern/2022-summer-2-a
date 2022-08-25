@@ -12,13 +12,6 @@ import { GameParticipant } from "@/models/game/data/gameParticipant";
 const Game = () => {
   const location = useLocation();
   const name = (location.state as { name: string }).name;
-  const wsProtocol = import.meta.env.VITE_PROTOCOL === "secure" ? "wss" : "ws";
-  let socket: WebSocket = new WebSocket(
-    `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/game`
-  );
-  socket.onopen = () => {
-    socket.send(JSON.stringify({ type: "name", name: name }));
-  };
   const [data, setData] = useState<GameData>(
     new GameData(
       new ParticipantCount(2),
@@ -36,12 +29,20 @@ const Game = () => {
       ]
     )
   );
-  socket.onmessage = (e) => {
-    const A = decodeGameData(e.data);
-    console.log(A);
-    setData(decodeGameData(e.data));
-  };
-  useEffect(() => {}, []);
+  useEffect(() => {
+      const wsProtocol = import.meta.env.VITE_PROTOCOL === "secure" ? "wss" : "ws";
+      const socket = new WebSocket(
+          `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/game`
+      );
+      socket.onopen = () => {
+          socket.send(JSON.stringify({ type: "name", name: name }));
+      };
+      socket.onmessage = (e) => {
+          const A = decodeGameData(e.data);
+          console.log(A);
+          setData(decodeGameData(e.data));
+      };
+  }, []);
   return (
     <>
       <h1>game!!!</h1>
