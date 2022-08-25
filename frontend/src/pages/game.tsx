@@ -30,10 +30,11 @@ const Game = () => {
       0
     )
   );
+  let socket:WebSocket
   useEffect(() => {
     const wsProtocol =
       import.meta.env.VITE_PROTOCOL === "secure" ? "wss" : "ws";
-    const socket = new WebSocket(
+    socket = new WebSocket(
       `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/game`
     );
     socket.onopen = () => {
@@ -45,10 +46,18 @@ const Game = () => {
       setData(decodeGameData(e.data));
     };
   }, []);
+  const spinRoulette = () => {
+      const message = {
+          type: "roulette",
+          name,
+      }
+      socket.send(JSON.stringify(message))
+  }
   return (
     <>
       <h1>game!!!</h1>
       <p>{data.nextName()}</p>
+        <p><button onClick={spinRoulette}>ルーレットを回す</button></p>
       <CellsComponent data={data} />
     </>
   );

@@ -5,10 +5,6 @@ import Piece from "@/components/game/Piece";
 import { GameParticipant } from "@/models/game/data/gameParticipant";
 
 type Props = { data: GameData };
-type PiecesType = {
-  color: string;
-  participant: GameParticipant;
-};
 
 const pieceColor = ["red", "blue", "aqua", "purple"];
 const cellStyle = css`
@@ -54,7 +50,7 @@ const CellsComponent = ({ data }: Props) => {
             key={cell.location.location}
             onClick={() => showModal(cell.title, cell.description)}
           >
-            {data.participants.map((participant) => {
+            {data.hereParticipants(cell.location).map((participant) => {
               return index === participant.location.location ? (
                 <Piece
                   color={pieceColor[participant.number]}
