@@ -2,6 +2,7 @@ import { ParticipantCount } from "@/models/game/data/participantCount";
 import { CellCount } from "@/models/game/data/cellCount";
 import { Cell } from "@/models/game/data/cell";
 import { GameParticipant } from "@/models/game/data/gameParticipant";
+import { Location } from "@/models/game/data/location";
 
 export class GameData {
   public constructor(
@@ -13,5 +14,11 @@ export class GameData {
   ) {}
   public nextName = () => {
     return this.participants[this.next].name;
+  };
+
+  public hereParticipants = (location: Location): GameParticipant[] => {
+    return this.participants.filter((participant) => {
+      return participant.isLocated(location);
+    });
   };
 }

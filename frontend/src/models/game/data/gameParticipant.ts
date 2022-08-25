@@ -6,4 +6,8 @@ export class GameParticipant {
     public readonly location: Location,
     public readonly number: number
   ) {}
+
+  public isLocated = (location: Location): boolean => {
+    return this.location.is(location);
+  };
 }

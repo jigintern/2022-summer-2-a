@@ -18,7 +18,7 @@ const data1 = new GameData(
   ],
   [
     new GameParticipant("kurakke", new Location(0), 0),
-    new GameParticipant("yoichi", new Location(1), 1),
+    new GameParticipant("yoichi", new Location(0), 1),
   ],
   0
 );
@@ -45,5 +45,15 @@ describe("gamedataのテスト", () => {
   });
   test("二番目の人のテスト", () => {
     expect(data2.nextName()).toBe("yoichi");
-  })
+  });
+
+  test("data1の0番地の人たちのテスト", () => {
+    expect(data1.hereParticipants(new Location(0))).toStrictEqual([
+      new GameParticipant("kurakke", new Location(0), 0),
+      new GameParticipant("yoichi", new Location(0), 1),
+    ]);
+  });
+  test("data1の1番地の人たちのテスト", () => {
+    expect(data1.hereParticipants(new Location(1))).toStrictEqual([]);
+  });
 });
