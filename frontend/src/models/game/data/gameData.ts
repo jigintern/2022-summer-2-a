@@ -8,6 +8,10 @@ export class GameData {
     public readonly participantCount: ParticipantCount,
     public cellCount: CellCount,
     public cells: Cell[],
-    public participants: GameParticipant[]
+    public participants: GameParticipant[],
+    public next: number,
   ) {}
+  public nextName = () => {
+    return "kurakke"
+  }
 }
