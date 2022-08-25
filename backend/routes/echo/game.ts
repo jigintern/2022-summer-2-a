@@ -2,6 +2,7 @@ import { HandlerContext, Handlers } from "$fresh/server.ts";
 import { GameParticipants } from "~/entity/game/participant/gameParticipants.ts";
 import { generateGameDataJSON } from "~/entity/game/data/generateGameDataJSON.ts";
 import { gameControlActions } from "../../entity/game/actions/gameControlActionable.ts";
+import { cellsData } from "~/entity/game/assets/data.ts";
 
 export interface GameControlEvent {
   type: "roulette" | "name";
@@ -9,7 +10,7 @@ export interface GameControlEvent {
 }
 
 let participants: GameParticipants = new GameParticipants();
-
+let ranks: string[] = [];
 const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
   const event: GameControlEvent = JSON.parse(e.data);
 
@@ -18,7 +19,8 @@ const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
     return;
   }
 
-  participants = gameControlActions[event.type]!(event, participants, socket);
+  const nextParticipants = gameControlActions[event.type]!(event, participants, socket);
+  ranks = ranks.concat(nextParticipants.newGoaledNames(participants, cellData.length));
   participants.sendGameData(generateGameDataJSON(participants));
 };
 

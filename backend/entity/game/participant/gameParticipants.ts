@@ -10,7 +10,7 @@ export interface Notifiable {
 export class GameParticipants {
   public constructor(
     private readonly participants: readonly GameParticipant[] = [],
-    public readonly next: number = 0,
+    public readonly next: number = 0
   ) {}
   public notify = (notification: Notifiable) => {
     const message = JSON.stringify(notification);
@@ -68,13 +68,18 @@ export class GameParticipants {
       return participant.data(index);
     });
   };
-  public newGoaledName = (before: Participants):string[] => {
-    const
-    return this.participants.filter(participant => before)
-  }
+  public newGoaledNames = (
+    before: GameParticipants,
+    maxCellCount: number
+  ): string[] => {
+    return this.goaledNames(maxCellCount).filter(
+      (name) => !before.goaledNames(maxCellCount).includes(name)
+    );
+  };
 
   private goaledNames = (maxCellCount: number) => {
-    return this.participants.filter(participant => participant.isGoaled(maxCellCount))
-        .map(participant => participant.name)
-  }
+    return this.participants
+      .filter((participant) => participant.isGoaled(maxCellCount))
+      .map((participant) => participant.name);
+  };
 }
