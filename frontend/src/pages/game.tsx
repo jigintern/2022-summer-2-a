@@ -26,26 +26,29 @@ const Game = () => {
       [
         new GameParticipant("kurakke", new Location(0), 0),
         new GameParticipant("yoichi", new Location(1), 1),
-      ]
+      ],
+      0
     )
   );
   useEffect(() => {
-      const wsProtocol = import.meta.env.VITE_PROTOCOL === "secure" ? "wss" : "ws";
-      const socket = new WebSocket(
-          `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/game`
-      );
-      socket.onopen = () => {
-          socket.send(JSON.stringify({ type: "name", name: name }));
-      };
-      socket.onmessage = (e) => {
-          const A = decodeGameData(e.data);
-          console.log(A);
-          setData(decodeGameData(e.data));
-      };
+    const wsProtocol =
+      import.meta.env.VITE_PROTOCOL === "secure" ? "wss" : "ws";
+    const socket = new WebSocket(
+      `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/game`
+    );
+    socket.onopen = () => {
+      socket.send(JSON.stringify({ type: "name", name: name }));
+    };
+    socket.onmessage = (e) => {
+      const A = decodeGameData(e.data);
+      console.log(A);
+      setData(decodeGameData(e.data));
+    };
   }, []);
   return (
     <>
       <h1>game!!!</h1>
+      <p>{data.nextName()}</p>
       <CellsComponent data={data} />
     </>
   );

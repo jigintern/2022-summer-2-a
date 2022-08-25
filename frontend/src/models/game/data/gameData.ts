@@ -9,9 +9,9 @@ export class GameData {
     public cellCount: CellCount,
     public cells: Cell[],
     public participants: GameParticipant[],
-    public next: number,
+    public next: number
   ) {}
   public nextName = () => {
-    return "kurakke"
-  }
+    return this.participants[this.next].name;
+  };
 }
