@@ -30,38 +30,44 @@ const Game = () => {
       0
     )
   );
-  const socket = useRef()
+  const socket = useRef<WebSocket>(undefined as any);
+  const [rouletteText, setRouletteText] = useState("");
   useEffect(() => {
     const wsProtocol =
       import.meta.env.VITE_PROTOCOL === "secure" ? "wss" : "ws";
-    socket = new WebSocket(
+    socket.current = new WebSocket(
       `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/game`
     );
-    socket.onopen = () => {
-      socket.send(JSON.stringify({ type: "name", name: name }));
+    socket.current.onopen = () => {
+      socket.current.send(JSON.stringify({ type: "name", name: name }));
     };
-    socket.onmessage = (e) => {
-      const A = decodeGameData(e.data);
-      console.log(A);
+    socket.current.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      if (data.type === "roulette") {
+        setRouletteText(`${data.name}さんが${data.number}を出しました。`);
+      }
       setData(decodeGameData(e.data));
     };
   }, []);
   const spinRoulette = () => {
-    console.log(socket);
-
     const message = {
       type: "roulette",
       name,
     };
-    socket.send(JSON.stringify(message));
+    socket.current.send(JSON.stringify(message));
   };
   return (
     <>
       <h1>game!!!</h1>
       <p>{data.nextName()}</p>
-      <p>
-        <button onClick={spinRoulette}>ルーレットを回す</button>
-      </p>
+      {name === data.nextName() ? (
+        <p>
+          <button onClick={spinRoulette}>ルーレットを回す</button>
+        </p>
+      ) : (
+        <></>
+      )}
+      <p>{rouletteText}</p>
       <CellsComponent data={data} />
     </>
   );
