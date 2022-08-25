@@ -7,7 +7,7 @@ class FakeParticipant extends GameParticipant {
   constructor(
     name: string,
     location: number = 0,
-    readonly histories: string[] = []
+    readonly histories: string[] = [],
   ) {
     super(name, undefined as any, location);
   }
@@ -27,7 +27,7 @@ Deno.test("通知のテスト", () => {
   participants.notify(new Notification("Ya! Hello!"));
   assertEquals(
     JSON.stringify(yoichi.histories),
-    JSON.stringify([JSON.stringify(new Notification("Ya! Hello!"))])
+    JSON.stringify([JSON.stringify(new Notification("Ya! Hello!"))]),
   );
 });
 
@@ -35,7 +35,7 @@ Deno.test("参加のテスト", () => {
   const participants = new GameParticipants([yoichi]);
   assertEquals(
     JSON.stringify(participants.joined(kurakke)),
-    JSON.stringify(new GameParticipants([yoichi, kurakke]))
+    JSON.stringify(new GameParticipants([yoichi, kurakke])),
   );
 });
 
@@ -62,9 +62,9 @@ Deno.test("移動のテスト", () => {
     JSON.stringify(
       new GameParticipants(
         [new GameParticipant("Yoichi", undefined as any, 6), kurakke],
-        1
-      )
-    )
+        1,
+      ),
+    ),
   );
 
   participants = participants.moved(new Dice("Kurakke", 1), 10);
@@ -77,9 +77,9 @@ Deno.test("移動のテスト", () => {
           new GameParticipant("Yoichi", undefined as any, 6),
           new GameParticipant("Kurakke", undefined as any, 1),
         ],
-        0
-      )
-    )
+        0,
+      ),
+    ),
   );
 
   participants = participants.moved(new Dice("Yoichi", 6), 10);
@@ -92,9 +92,9 @@ Deno.test("移動のテスト", () => {
           new GameParticipant("Yoichi", undefined as any, 10),
           new GameParticipant("Kurakke", undefined as any, 1),
         ],
-        1
-      )
-    )
+        1,
+      ),
+    ),
   );
 
   participants = participants.moved(new Dice("Kurakke", 6), 10);
@@ -107,9 +107,9 @@ Deno.test("移動のテスト", () => {
           new GameParticipant("Yoichi", undefined as any, 10),
           new GameParticipant("Kurakke", undefined as any, 7),
         ],
-        1
-      )
-    )
+        1,
+      ),
+    ),
   );
 });
 
@@ -119,6 +119,6 @@ Deno.test("新しくゴールした人の名前", () => {
 
   assertEquals(
     JSON.stringify(goaledParticipants.newGoaledNames(participants, 5)),
-    JSON.stringify(["Yoichi"])
+    JSON.stringify(["Yoichi"]),
   );
 });

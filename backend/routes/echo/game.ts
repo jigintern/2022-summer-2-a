@@ -1,8 +1,9 @@
 import { HandlerContext, Handlers } from "$fresh/server.ts";
 import { GameParticipants } from "~/entity/game/participant/gameParticipants.ts";
 import { generateGameDataJSON } from "~/entity/game/data/generateGameDataJSON.ts";
-import { gameControlActions } from "../../entity/game/actions/gameControlActionable.ts";
+import { gameControlActions } from "~/entity/game/actions/gameControlActionable.ts";
 import { cellsData } from "~/entity/game/assets/data.ts";
+import { BreakNotify } from "~/entity/game/notify/breakNotify.ts";
 
 export interface GameControlEvent {
   type: "roulette" | "name";
@@ -19,11 +20,23 @@ const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
     return;
   }
 
-  const nextParticipants = gameControlActions[event.type]!(event, participants, socket);
-  ranks = ranks.concat(nextParticipants.newGoaledNames(participants, cellsData.length - 1))
-  participants = nextParticipants;;
-  console.log(ranks)
+  const nextParticipants = gameControlActions[event.type]!(
+    event,
+    participants,
+    socket,
+  );
+  ranks = ranks.concat(
+    nextParticipants.newGoaledNames(participants, cellsData.length - 1),
+  );
+  participants = nextParticipants;
   participants.sendGameData(generateGameDataJSON(participants, ranks));
+  if (participants.next === null) {
+    participants = new GameParticipants();
+  }
+};
+const onClose = () => {
+  participants.notify(new BreakNotify());
+  participants = new GameParticipants();
 };
 
 export const handler: Handlers = {
@@ -36,6 +49,7 @@ export const handler: Handlers = {
     }
     socket.onmessage = (e) => onMessage(e, socket);
     socket.onerror = (e) => console.log("socket errored:", e);
+    socket.onclose = () => onClose();
     return response;
   },
 };

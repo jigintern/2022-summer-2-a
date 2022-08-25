@@ -49,6 +49,10 @@ const Game = () => {
         setRouletteText(`${data.name}さんが${data.number}を出しました。`);
         return;
       }
+      if (data.type === "break") {
+          alert("中断されました");
+          navigate("/");
+      }
       setData(decodeGameData(e.data));
     };
   }, []);

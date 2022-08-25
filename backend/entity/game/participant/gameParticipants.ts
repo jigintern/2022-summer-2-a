@@ -10,7 +10,7 @@ export interface Notifiable {
 export class GameParticipants {
   public constructor(
     private readonly participants: readonly GameParticipant[] = [],
-    public readonly next: number = 0
+    public readonly next: number = 0,
   ) {}
   public notify = (notification: Notifiable) => {
     const message = JSON.stringify(notification);
@@ -41,14 +41,14 @@ export class GameParticipants {
         if (!participant.isName(dice.name)) return participant;
         return participant.moved(dice, maxCellCount);
       }),
-      this.nextNumber(maxCellCount)
+      this.nextNumber(maxCellCount),
     );
   };
 
   /** @return 全員がゴールしていた場合-1を返す */
   private nextNumber = (
     maxCellCount: number,
-    candidate: number = this.nextCandidate()
+    candidate: number = this.nextCandidate(),
   ): number => {
     if (!this.participants[candidate].isGoaled(maxCellCount)) {
       return candidate;
@@ -70,10 +70,10 @@ export class GameParticipants {
   };
   public newGoaledNames = (
     before: GameParticipants,
-    maxCellCount: number
+    maxCellCount: number,
   ): string[] => {
     return this.goaledNames(maxCellCount).filter(
-      (name) => !before.goaledNames(maxCellCount).includes(name)
+      (name) => !before.goaledNames(maxCellCount).includes(name),
     );
   };
 
