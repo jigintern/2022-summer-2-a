@@ -45,6 +45,8 @@ export class GameParticipants {
     );
   };
 
+  public isFinished = () => this.next === null;
+
   /** @return 全員がゴールしていた場合-1を返す */
   private nextNumber = (
     maxCellCount: number,
