@@ -4,6 +4,7 @@ export interface GameDataJSON {
   readonly cells: CellData[];
   readonly participants: ParticipantData[];
   readonly next: number;
+  readonly before: number;
   readonly ranks: string[];
 }
 

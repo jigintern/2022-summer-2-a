@@ -18,6 +18,7 @@ export function decodeGameData(json: string): GameData {
       return new GameParticipant(name, new Location(location), number);
     }),
     content.next,
+      content.before,
       content.ranks,
   );
 }

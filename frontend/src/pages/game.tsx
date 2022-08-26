@@ -40,7 +40,9 @@ const Game = () => {
         alert("中断されました");
         navigate("/");
       }
-      show(decodeGameData(e.data));
+      console.log(data.next);
+      setData(decodeGameData(e.data))
+      show(decodeGameData(e.data))
     };
   }, []);
   useEffect(() => {
@@ -63,11 +65,9 @@ const Game = () => {
   const useShow = {
     onShow: (title: string, description: string) => {},
   };
+
   const show = (nextData: GameData) => {
-    const before = data.next;
-    console.log("next", data.next);
-    setData(nextData);
-    const movePerson = nextData.participants[before];
+    const movePerson = nextData.participants[nextData.before];
     const title = nextData.cells[movePerson.location.location].title;
     const description =
       nextData.cells[movePerson.location.location].description;

@@ -21,7 +21,8 @@ const data1 = new GameData(
     new GameParticipant("yoichi", new Location(0), 1),
   ],
   0,
-    [],
+  0,
+  []
 );
 
 const data2 = new GameData(
@@ -39,7 +40,8 @@ const data2 = new GameData(
     new GameParticipant("yoichi", new Location(1), 1),
   ],
   1,
-    [],
+  0,
+  []
 );
 describe("gamedataのテスト", () => {
   test("次の人の名前のテスト", () => {
@@ -50,10 +52,12 @@ describe("gamedataのテスト", () => {
   });
 
   test("data1の0番地の人たちのテスト", () => {
-    expect(JSON.stringify(data1.hereParticipants(new Location(0)))).toBe(JSON.stringify([
-      new GameParticipant("kurakke", new Location(0), 0),
-      new GameParticipant("yoichi", new Location(0), 1),
-    ]));
+    expect(JSON.stringify(data1.hereParticipants(new Location(0)))).toBe(
+      JSON.stringify([
+        new GameParticipant("kurakke", new Location(0), 0),
+        new GameParticipant("yoichi", new Location(0), 1),
+      ])
+    );
   });
   test("data1の1番地の人たちのテスト", () => {
     expect(data1.hereParticipants(new Location(1))).toStrictEqual([]);

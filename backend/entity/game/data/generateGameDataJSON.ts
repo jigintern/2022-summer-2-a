@@ -5,6 +5,7 @@ import { cellsData } from "~/entity/game/assets/data.ts";
 export function generateGameDataJSON(
   participants: GameParticipants,
   ranks: string[],
+  before: number,
 ): GameDataJSON {
   return {
     participantCount: participants.count,
@@ -12,6 +13,7 @@ export function generateGameDataJSON(
     cells: cellsData,
     participants: participants.data(),
     next: participants.next,
+    before,
     ranks,
   };
 }
