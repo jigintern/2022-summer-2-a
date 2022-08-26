@@ -7,7 +7,7 @@ import { GameData } from "@/models/game/data/gameData";
 import { GameDataJSON } from "$protocols/gameDataJSON";
 
 export function decodeGameData(json: string): GameData {
-  const content: GameDataJSON = JSON.parse(json);
+  const content: GameDataJSON = JSON.parse(json)
   return new GameData(
     new ParticipantCount(content.participantCount),
     new CellCount(content.cellCount),

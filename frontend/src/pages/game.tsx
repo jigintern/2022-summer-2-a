@@ -7,14 +7,14 @@ import { mockGameData } from "@/models/game/mock/mockGameData";
 
 const Game = () => {
   const location = useLocation();
-  const name = (() => {
-    try {
-      return (location.state as { name: string }).name;
-    } catch {
-      return "default";
-    }
-    return "default";
-  })();
+  const name = (location.state as { name: string }).name;
+  // const name = (() => {
+  //   try {
+  //     return (location.state as { name: string }).name;
+  //   } catch {
+  //     return "default";
+  //   }
+  // })();
   const navigate = useNavigate();
   const [data, setData] = useState<GameData>(mockGameData);
   const socket = useRef<WebSocket>(undefined as any);
@@ -26,23 +26,25 @@ const Game = () => {
       `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/game`
     );
     socket.current.onopen = () => {
+      console.log("open")
       socket.current.send(JSON.stringify({ type: "name", name: name }));
     };
     socket.current.onmessage = (e) => {
+      console.log("receive");
       const data = JSON.parse(e.data);
       if (data.type === "roulette") {
         setRouletteText(`${data.name}さんが${data.number}を出しました。`);
         return;
       }
       if (data.type === "break") {
-          alert("中断されました");
-          navigate("/");
+        alert("中断されました");
+        navigate("/");
       }
       show(decodeGameData(e.data));
     };
   }, []);
   useEffect(() => {
-      console.log("ranks", data.ranks)
+    console.log("ranks", data.ranks);
     if (data.nextName() === null) {
       navigate("/rank", { state: { ranks: data.ranks } });
       return;
@@ -59,19 +61,21 @@ const Game = () => {
   const [nextName, setNextName] = useState<string>("");
 
   const useShow = {
-    onShow:  (title: string, descrioption: string) => {}
-  }
+    onShow: (title: string, description: string) => {},
+  };
   const show = (nextData: GameData) => {
     const before = data.next;
-    console.log(data.next)
+    console.log("next", data.next);
+    setData(nextData);
     const movePerson = nextData.participants[before];
     const title = nextData.cells[movePerson.location.location].title;
-    const description = nextData.cells[movePerson.location.location].description;
+    const description =
+      nextData.cells[movePerson.location.location].description;
     useShow.onShow(title, description);
-    setData(nextData)
-  }
+  };
 
-    return (
+  console.dir(data);
+  return (
     <>
       <h1>game!!!</h1>
       <p>{nextName}</p>

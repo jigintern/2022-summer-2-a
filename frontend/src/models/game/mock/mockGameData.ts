@@ -14,6 +14,6 @@ export const mockGameData = new GameData(
     new GameParticipant("kurakke", new Location(3), 2),
     new GameParticipant("kei", new Location(4), 3),
   ],
-  3,
+  0,
   []
 );
