@@ -3,6 +3,7 @@ import { GameData } from "@/models/game/data/gameData";
 import { css } from "@emotion/react";
 import Piece from "@/components/game/Piece";
 import { GameParticipant } from "@/models/game/data/gameParticipant";
+import { Location } from "@/models/game/data/location";
 
 type Props = { data: GameData };
 
@@ -50,7 +51,9 @@ const CellsComponent = ({ data }: Props) => {
             key={cell.location.location}
             onClick={() => showModal(cell.title, cell.description)}
           >
-            {data.hereParticipants(cell.location).map((participant) => {
+            {data.hereParticipants(new Location(index)).map((participant) => {
+
+              console.log(index, participant.location.location);
               return index === participant.location.location ? (
                 <Piece
                   color={pieceColor[participant.number]}
