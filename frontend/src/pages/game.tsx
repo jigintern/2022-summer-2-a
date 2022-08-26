@@ -7,14 +7,14 @@ import { mockGameData } from "@/models/game/mock/mockGameData";
 
 const Game = () => {
   const location = useLocation();
-  const name = (location.state as { name: string }).name;
-  // const name = (() => {
-  //   try {
-  //     return (location.state as { name: string }).name;
-  //   } catch {
-  //     return "default";
-  //   }
-  // })();
+  // const name = (location.state as { name: string }).name;
+  const name = (() => {
+    try {
+      return (location.state as { name: string }).name;
+    } catch {
+      return "default";
+    }
+  })();
   const navigate = useNavigate();
   const [data, setData] = useState<GameData>(mockGameData);
   const socket = useRef<WebSocket>(undefined as any);
@@ -26,7 +26,7 @@ const Game = () => {
       `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/game`
     );
     socket.current.onopen = () => {
-      console.log("open")
+      console.log("open");
       socket.current.send(JSON.stringify({ type: "name", name: name }));
     };
     socket.current.onmessage = (e) => {
