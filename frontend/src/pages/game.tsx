@@ -1,13 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import CellsComponent from "@/components/game/cellsComponent";
 import { GameData } from "@/models/game/data/gameData";
-import { Cell } from "@/models/game/data/cell";
-import { Location } from "@/models/game/data/location";
 import { useLocation, useNavigate } from "react-router-dom";
 import { decodeGameData } from "@/models/game/data/decodeGameData";
-import { ParticipantCount } from "@/models/game/data/participantCount";
-import { CellCount } from "@/models/game/data/cellCount";
-import { GameParticipant } from "@/models/game/data/gameParticipant";
 import { mockGameData } from "@/models/game/mock/mockGameData";
 
 const Game = () => {
@@ -40,14 +35,14 @@ const Game = () => {
         return;
       }
       if (data.type === "break") {
-        alert("中断されました");
-        navigate("/");
+          alert("中断されました");
+          navigate("/");
       }
-      setData(decodeGameData(e.data));
+      show(decodeGameData(e.data));
     };
   }, []);
   useEffect(() => {
-    console.log("ranks", data.ranks);
+      console.log("ranks", data.ranks)
     if (data.nextName() === null) {
       navigate("/rank", { state: { ranks: data.ranks } });
       return;
@@ -62,8 +57,21 @@ const Game = () => {
     socket.current.send(JSON.stringify(message));
   };
   const [nextName, setNextName] = useState<string>("");
-  console.dir(data);
-  return (
+
+  const useShow = {
+    onShow:  (title: string, descrioption: string) => {}
+  }
+  const show = (nextData: GameData) => {
+    const before = data.next;
+    console.log(data.next)
+    const movePerson = nextData.participants[before];
+    const title = nextData.cells[movePerson.location.location].title;
+    const description = nextData.cells[movePerson.location.location].description;
+    useShow.onShow(title, description);
+    setData(nextData)
+  }
+
+    return (
     <>
       <h1>game!!!</h1>
       <p>{nextName}</p>
@@ -75,7 +83,7 @@ const Game = () => {
         <></>
       )}
       <p>{rouletteText}</p>
-      <CellsComponent data={data} />
+      <CellsComponent data={data} useShow={useShow} />
     </>
   );
 };
