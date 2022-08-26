@@ -2,9 +2,10 @@ import React, { useCallback, useRef, useState } from "react";
 import { GameData } from "@/models/game/data/gameData";
 import { css } from "@emotion/react";
 import Piece from "@/components/game/Piece";
-import { GameParticipant } from "@/models/game/data/gameParticipant";
 
-type Props = { data: GameData };
+type Props = { data: GameData, useShow: {
+  onShow(title: string, description: string): void
+  }};
 
 const pieceColor = ["red", "blue", "aqua", "purple"];
 const cellStyle = css`
@@ -14,7 +15,7 @@ const cellStyle = css`
   border: 1px solid black;
 `;
 
-const CellsComponent = ({ data }: Props) => {
+const CellsComponent = ({ data, useShow }: Props) => {
   const ref: React.MutableRefObject<HTMLDialogElement | null> = useRef(null);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -26,6 +27,10 @@ const CellsComponent = ({ data }: Props) => {
       ref.current.showModal();
     }
   }, []);
+
+  useShow.onShow = (title, description) => {
+    showModal(title, description);
+  }
 
   const closeModal = useCallback(() => {
     if (ref.current) {

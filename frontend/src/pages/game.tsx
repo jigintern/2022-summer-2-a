@@ -53,7 +53,7 @@ const Game = () => {
           alert("中断されました");
           navigate("/");
       }
-      setData(decodeGameData(e.data));
+      show(decodeGameData(e.data));
     };
   }, []);
   useEffect(() => {
@@ -73,7 +73,20 @@ const Game = () => {
   };
   const [nextName, setNextName] = useState<string>("");
 
-  return (
+  const useShow = {
+    onShow:  (title: string, descrioption: string) => {}
+  }
+  const show = (nextData: GameData) => {
+    const before = data.next;
+    console.log(data.next)
+    const movePerson = nextData.participants[before];
+    const title = nextData.cells[movePerson.location.location].title;
+    const description = nextData.cells[movePerson.location.location].description;
+    useShow.onShow(title, description);
+    setData(nextData)
+  }
+
+    return (
     <>
       <h1>game!!!</h1>
       <p>{nextName}</p>
@@ -85,7 +98,7 @@ const Game = () => {
         <></>
       )}
       <p>{rouletteText}</p>
-      <CellsComponent data={data} />
+      <CellsComponent data={data} useShow={useShow} />
     </>
   );
 };
