@@ -3,10 +3,10 @@ import { CellData } from "$protocols/gameDataJSON.ts";
 export const cellsData: CellData[] = [
   {
     location: 0,
-    title: "福井県立恐竜博物館",
-    description: "恐竜がかっこよかった。2マス進む",
+    title: "START",
+    description: "すごろくのはじまり!!!",
     rest: false,
-    forward: 2,
+    forward: 0,
   },
   {
     location: 1,
@@ -150,8 +150,8 @@ export const cellsData: CellData[] = [
   },
   {
     location: 21,
-    title: "サンドーム福井",
-    description: "",
+    title: "GOAL",
+    description: "やったね!!!",
     rest: false,
     forward: 0,
   },
