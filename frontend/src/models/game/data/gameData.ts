@@ -7,11 +7,12 @@ import { Location } from "@/models/game/data/location";
 export class GameData {
   public constructor(
     public readonly participantCount: ParticipantCount,
-    public cellCount: CellCount,
-    public cells: Cell[],
-    public participants: GameParticipant[],
-    public next: number,
-    public ranks: readonly string[],
+    public readonly cellCount: CellCount,
+    public readonly cells: Cell[],
+    public readonly participants: GameParticipant[],
+    public readonly next: number,
+    public readonly before: number = 0,
+    public readonly ranks: readonly string[],
   ) {}
   public nextName = ():string | null => {
     if (this.next === -1) return null;
@@ -24,4 +25,7 @@ export class GameData {
     });
   };
 
+  public equals = (compared: GameData): boolean => {
+    return JSON.stringify(this) === JSON.stringify(compared);
+  }
 }
