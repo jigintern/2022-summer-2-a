@@ -14,7 +14,7 @@ export class Dice {
 
   public static generate = (name: string): Dice => {
     const min = 1;
-    const max = 6;
+    const max = 7;
     return new Dice(name, Math.floor(Math.random() * (max - min) + min));
   };
 
