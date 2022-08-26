@@ -16,9 +16,7 @@ class FakeParticipant extends GameParticipant {
 
 class Notification implements Notifiable {
   type = "test";
-  constructor(
-    public readonly message: string,
-  ) {}
+  constructor(public readonly message: string) {}
 }
 
 const kurakke = new FakeParticipant("Kurakke");
@@ -57,27 +55,70 @@ Deno.test("移動のテスト", () => {
 
   let participants = new GameParticipants([yoichi, kurakke]);
 
-  participants = participants.moved(new Dice("Yoichi", 6));
+  participants = participants.moved(new Dice("Yoichi", 6), 10);
 
   assertEquals(
     JSON.stringify(participants),
     JSON.stringify(
-      new GameParticipants([
-        new GameParticipant("Yoichi", undefined as any, 6),
-        kurakke,
-      ], 1),
+      new GameParticipants(
+        [new GameParticipant("Yoichi", undefined as any, 6), kurakke],
+        1,
+      ),
     ),
   );
 
-  participants = participants.moved(new Dice("Kurakke", 1));
+  participants = participants.moved(new Dice("Kurakke", 1), 10);
 
   assertEquals(
     JSON.stringify(participants),
     JSON.stringify(
-      new GameParticipants([
-        new GameParticipant("Yoichi", undefined as any, 6),
-        new GameParticipant("Kurakke", undefined as any, 1),
-      ], 0),
+      new GameParticipants(
+        [
+          new GameParticipant("Yoichi", undefined as any, 6),
+          new GameParticipant("Kurakke", undefined as any, 1),
+        ],
+        0,
+      ),
     ),
+  );
+
+  participants = participants.moved(new Dice("Yoichi", 6), 10);
+
+  assertEquals(
+    JSON.stringify(participants),
+    JSON.stringify(
+      new GameParticipants(
+        [
+          new GameParticipant("Yoichi", undefined as any, 10),
+          new GameParticipant("Kurakke", undefined as any, 1),
+        ],
+        1,
+      ),
+    ),
+  );
+
+  participants = participants.moved(new Dice("Kurakke", 6), 10);
+
+  assertEquals(
+    JSON.stringify(participants),
+    JSON.stringify(
+      new GameParticipants(
+        [
+          new GameParticipant("Yoichi", undefined as any, 10),
+          new GameParticipant("Kurakke", undefined as any, 7),
+        ],
+        1,
+      ),
+    ),
+  );
+});
+
+Deno.test("新しくゴールした人の名前", () => {
+  const participants = new GameParticipants([yoichi, kurakke]);
+  const goaledParticipants = participants.moved(new Dice("Yoichi", 6), 5);
+
+  assertEquals(
+    JSON.stringify(goaledParticipants.newGoaledNames(participants, 5)),
+    JSON.stringify(["Yoichi"]),
   );
 });

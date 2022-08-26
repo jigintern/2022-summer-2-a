@@ -35,24 +35,51 @@ export class GameParticipants {
     return this.participants[this.next].isName(name);
   };
 
-  public moved = (dice: Dice): GameParticipants => {
+  public moved = (dice: Dice, maxCellCount: number): GameParticipants => {
     return new GameParticipants(
       this.participants.map((participant) => {
         if (!participant.isName(dice.name)) return participant;
-        return participant.moved(dice);
+        return participant.moved(dice, maxCellCount);
       }),
-      this.nextNumber(),
+      this.nextNumber(maxCellCount),
     );
   };
 
-  private nextNumber = (): number => {
-    if (this.next + 1 < this.count) return this.next + 1;
-    return 0;
+  /** @return 全員がゴールしていた場合-1を返す */
+  private nextNumber = (
+    maxCellCount: number,
+    candidate: number = this.nextCandidate(),
+  ): number => {
+    if (!this.participants[candidate].isGoaled(maxCellCount)) {
+      return candidate;
+    }
+    if (candidate === this.next) {
+      return -1;
+    }
+    return this.nextNumber(maxCellCount, this.nextCandidate(candidate));
+  };
+
+  private nextCandidate = (candidate: number = this.next) => {
+    return candidate + 1 < this.count ? candidate + 1 : 0;
   };
 
   public data = (): ParticipantData[] => {
     return this.participants.map((participant, index) => {
       return participant.data(index);
     });
+  };
+  public newGoaledNames = (
+    before: GameParticipants,
+    maxCellCount: number,
+  ): string[] => {
+    return this.goaledNames(maxCellCount).filter(
+      (name) => !before.goaledNames(maxCellCount).includes(name),
+    );
+  };
+
+  private goaledNames = (maxCellCount: number) => {
+    return this.participants
+      .filter((participant) => participant.isGoaled(maxCellCount))
+      .map((participant) => participant.name);
   };
 }
