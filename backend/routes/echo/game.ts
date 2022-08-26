@@ -12,6 +12,12 @@ export interface GameControlEvent {
 
 let participants: GameParticipants = new GameParticipants();
 let ranks: string[] = [];
+
+const reset = () => {
+  participants = new GameParticipants();
+  ranks = [];
+}
+
 const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
   const event: GameControlEvent = JSON.parse(e.data);
 
@@ -30,13 +36,13 @@ const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
   );
   participants = nextParticipants;
   participants.sendGameData(generateGameDataJSON(participants, ranks));
-  if (participants.next === null) {
-    participants = new GameParticipants();
+  if (participants.isFinished()) {
+    reset();
   }
 };
 const onClose = () => {
   participants.notify(new BreakNotify());
-  participants = new GameParticipants();
+  reset();
 };
 
 export const handler: Handlers = {
