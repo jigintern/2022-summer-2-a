@@ -1,37 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import CellsComponent from "@/components/game/cellsComponent";
 import { GameData } from "@/models/game/data/gameData";
-import { Cell } from "@/models/game/data/cell";
-import { Location } from "@/models/game/data/location";
 import { useLocation, useNavigate } from "react-router-dom";
 import { decodeGameData } from "@/models/game/data/decodeGameData";
-import { ParticipantCount } from "@/models/game/data/participantCount";
-import { CellCount } from "@/models/game/data/cellCount";
-import { GameParticipant } from "@/models/game/data/gameParticipant";
+import { mockGameData } from "@/models/game/mock/mockGameData";
 
 const Game = () => {
   const location = useLocation();
-  const name = (location.state as { name: string }).name;
+  // const name = (location.state as { name: string }).name;
+  const name = (() => {
+    try {
+      return (location.state as { name: string }).name;
+    } catch {
+      return "default";
+    }
+  })();
   const navigate = useNavigate();
-  const [data, setData] = useState<GameData>(
-    new GameData(
-      new ParticipantCount(2),
-      new CellCount(5),
-      [
-        new Cell("aaa", new Location(0), "bbbb"),
-        new Cell("ccc", new Location(1), "cccc"),
-        new Cell("ddd", new Location(2), "dddd"),
-        new Cell("eee", new Location(3), "ffff"),
-        new Cell("ggg", new Location(4), "zzzz"),
-      ],
-      [
-        new GameParticipant("kurakke", new Location(0), 0),
-        new GameParticipant("yoichi", new Location(1), 1),
-      ],
-      0,
-        [],
-    )
-  );
+  const [data, setData] = useState<GameData>(mockGameData);
   const socket = useRef<WebSocket>(undefined as any);
   const [rouletteText, setRouletteText] = useState("");
   useEffect(() => {
@@ -41,23 +26,25 @@ const Game = () => {
       `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/game`
     );
     socket.current.onopen = () => {
+      console.log("open");
       socket.current.send(JSON.stringify({ type: "name", name: name }));
     };
     socket.current.onmessage = (e) => {
+      console.log("receive");
       const data = JSON.parse(e.data);
       if (data.type === "roulette") {
         setRouletteText(`${data.name}さんが${data.number}を出しました。`);
         return;
       }
       if (data.type === "break") {
-          alert("中断されました");
-          navigate("/");
+        alert("中断されました");
+        navigate("/");
       }
-      setData(decodeGameData(e.data));
+      show(decodeGameData(e.data));
     };
   }, []);
   useEffect(() => {
-      console.log("ranks", data.ranks)
+    console.log("ranks", data.ranks);
     if (data.nextName() === null) {
       navigate("/rank", { state: { ranks: data.ranks } });
       return;
@@ -73,6 +60,21 @@ const Game = () => {
   };
   const [nextName, setNextName] = useState<string>("");
 
+  const useShow = {
+    onShow: (title: string, description: string) => {},
+  };
+  const show = (nextData: GameData) => {
+    const before = data.next;
+    console.log("next", data.next);
+    setData(nextData);
+    const movePerson = nextData.participants[before];
+    const title = nextData.cells[movePerson.location.location].title;
+    const description =
+      nextData.cells[movePerson.location.location].description;
+    useShow.onShow(title, description);
+  };
+
+  console.dir(data);
   return (
     <>
       <h1>game!!!</h1>
@@ -85,7 +87,7 @@ const Game = () => {
         <></>
       )}
       <p>{rouletteText}</p>
-      <CellsComponent data={data} />
+      <CellsComponent data={data} useShow={useShow} />
     </>
   );
 };
