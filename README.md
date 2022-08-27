@@ -14,11 +14,14 @@ VITE_PROTOCOL=not_secure
 EOF
 ```
 
-run
+run backend
 ```
 cd backend
 deno run -A main.ts
-cd ../frontend/dist
+```
+run frontend
+```
+cd frontend/dist
 deno run --allow-net --allow-read https://taisukef.github.io/liveserver/liveserver.js
 ```
 コンソールに表示されたURLを開く
