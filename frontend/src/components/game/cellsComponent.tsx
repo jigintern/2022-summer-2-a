@@ -3,6 +3,29 @@ import { GameData } from "@/models/game/data/gameData";
 import { css } from "@emotion/react";
 import Piece from "@/components/game/Piece";
 import { Location } from "@/models/game/data/location";
+//import { name2pic } from "https://code4fukui.github.io/name2pic/fukui.ts";
+
+// 本当は URL import したいけど、現行TypeScriptではできないので、下記コピペ
+const url = "https://code4fukui.github.io/fukui-spot/fuku-e-spot.jsonld";
+let data: any = null;
+
+export async function name2pic(name: string): Promise<string | null> {
+  if (!data) {
+    data = await (await fetch(url)).json();
+  }
+  for (const d of data) {
+    if (d.name == name) {
+      return d.image;
+    }
+  }
+  for (const d of data) {
+    if (d.name.indexOf(name) >= 0) {
+      return d.image;
+    }
+  }
+  return null;
+};
+// ここまで
 
 type Props = { data: GameData, useShow: {
   onShow(title: string, description: string): void
@@ -21,12 +44,15 @@ const CellsComponent = ({ data, useShow }: Props) => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
-  const showModal = useCallback((title: string, description: string) => {
+  const showModal = useCallback(async (title: string, description: string) => {
     setTitle(title);
     setDescription(description);
     if (ref.current) {
       ref.current.showModal();
     }
+    // 現在位置の画像を取得して背景にする
+    const img = await name2pic(title);
+    document.body.style.backgroundImage = `url(${img})`;
   }, []);
 
   useShow.onShow = (title, description) => {
