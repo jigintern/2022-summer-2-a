@@ -6,5 +6,5 @@ await serve(async (req) => {
   console.log(url.pathname);
 
   const fileResponse = await publicFileResponse(req);
-  return fileResponse.status === 404 ? indexHTMLResponse(url) : fileResponse
+  return fileResponse.status === 404 ? await indexHTMLResponse(url) : fileResponse
 });
