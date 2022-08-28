@@ -7,4 +7,4 @@ export const publicFileResponse = (req: Request) => serveDir(req, {
     enableCors: true,
 });
 
-export const indexHTMLResponse = (url: URL) => fetch(`${url.protocol}//${url.host}`)
+export const indexHTMLResponse = async (url: URL) => await fetch(`${url.protocol}//${url.host}`)
