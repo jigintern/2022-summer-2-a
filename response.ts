@@ -7,4 +7,8 @@ export const publicFileResponse = (req: Request) => serveDir(req, {
     enableCors: true,
 });
 
-export const indexHTMLResponse = async (url: URL) => await fetch(`${url.protocol}//${url.host}`)
+export const indexHTMLResponse = async (): Promise<Response> => {
+    const indexHTMLText = await Deno.readTextFile('./public/index.html');
+    const HTMLHeaders = new Headers({ "Content-Type": "text/html; charset=utf-8" })
+    return new Response(indexHTMLText, { headers: HTMLHeaders });
+}
