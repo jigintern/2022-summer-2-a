@@ -4,7 +4,6 @@ import { indexHTMLResponse, publicFileResponse } from "./response.ts";
 await serve(async (req) => {
   const url = new URL(req.url);
   console.log(url.pathname);
-
   const fileResponse = await publicFileResponse(req);
-  return fileResponse.status === 404 ? await indexHTMLResponse(url) : fileResponse
+  return fileResponse.status === 404 ? await indexHTMLResponse() : fileResponse
 });
