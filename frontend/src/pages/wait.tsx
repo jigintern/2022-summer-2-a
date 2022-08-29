@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NameMessage } from "@/models/wait/nameMessage";
+import { Socket } from "@/connect/socket";
 
 const Wait = () => {
   const navigate = useNavigate();
-  const wsProtocol = import.meta.env.VITE_PROTOCOL === "secure" ? "wss" : "ws";
-  const socket = new WebSocket(
-    `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/wait`
-  );
-  socket.onmessage = (e) => {
+  // const wsProtocol = import.meta.env.VITE_PROTOCOL === "secure" ? "wss" : "ws";
+  // const socket = new WebSocket(
+  //   `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/wait`
+  // );
+  const socket = Socket.makeByEnv("/echo/wait");
+  socket.onmessage = (socket, e) => {
     if (e.data === "start") {
       navigate("/game", { state: { name: name } });
       return;
@@ -18,13 +20,13 @@ const Wait = () => {
   const [isNameSended, setIsNameSended] = useState<boolean>(false);
   const [name, setName] = useState("");
   const isNameSendible = name !== "";
-  const sendName = (): void => {
-    new NameMessage(name).send(socket);
+  const sendName = async (): Promise<void> => {
+    await new NameMessage(name).send(socket);
     setIsNameSended(true);
   };
   const [isStartSended, setIsStartSended] = useState<boolean>(false);
-  const sendStart = (): void => {
-    socket.send(JSON.stringify({ type: "start" }));
+  const sendStart = async (): Promise<void> => {
+    await socket.send({ type: "start" });
     setIsStartSended(true);
   };
 

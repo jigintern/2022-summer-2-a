@@ -18,9 +18,13 @@ const reset = () => {
   participants = new GameParticipants();
   ranks = [];
   before = 0;
-}
+};
 
 const onMessage = (e: MessageEvent<string>, socket: WebSocket) => {
+  if (e.data === "ping") {
+    socket.send("pong");
+    return;
+  }
   const event: GameControlEvent = JSON.parse(e.data);
 
   if (gameControlActions[event.type] === undefined) {

@@ -6,6 +6,10 @@ import { WaitParticipants } from "~/entity/wait/participant/waitParticipants.ts"
 let participants: WaitParticipants = new WaitParticipants();
 
 const onMessage = (socket: WebSocket, e: MessageEvent<string>) => {
+  if (e.data === "ping") {
+    socket.send("pong");
+    return;
+  }
   const message: WaitMessage = JSON.parse(e.data);
   switch (message.type) {
     case "name":

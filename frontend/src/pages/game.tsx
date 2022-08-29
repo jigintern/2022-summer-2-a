@@ -4,10 +4,10 @@ import { GameData } from "@/models/game/data/gameData";
 import { useLocation, useNavigate } from "react-router-dom";
 import { decodeGameData } from "@/models/game/data/decodeGameData";
 import { mockGameData } from "@/models/game/mock/mockGameData";
+import { Socket } from "@/connect/socket"
 
 const Game = () => {
   const location = useLocation();
-  // const name = (location.state as { name: string }).name;
   const name = (() => {
     try {
       return (location.state as { name: string }).name;
@@ -17,19 +17,20 @@ const Game = () => {
   })();
   const navigate = useNavigate();
   const [data, setData] = useState<GameData>(mockGameData);
-  const socket = useRef<WebSocket>(undefined as any);
+  const socket = useRef<Socket>(undefined as any);
   const [rouletteText, setRouletteText] = useState("");
   useEffect(() => {
-    const wsProtocol =
-      import.meta.env.VITE_PROTOCOL === "secure" ? "wss" : "ws";
-    socket.current = new WebSocket(
-      `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/game`
-    );
-    socket.current.onopen = () => {
+    // const wsProtocol =
+      // import.meta.env.VITE_PROTOCOL === "secure" ? "wss" : "ws";
+    // socket.current = new WebSocket(
+    //   `${wsProtocol}://${import.meta.env.VITE_HOST}/echo/game`
+    // );
+    socket.current = Socket.makeByEnv('/echo/game');
+    socket.current.onopen = async () => {
       console.log("open");
-      socket.current.send(JSON.stringify({ type: "name", name: name }));
+      await socket.current.send(JSON.stringify({ type: "name", name: name }));
     };
-    socket.current.onmessage = (e) => {
+    socket.current.onmessage = (socket, e) => {
       console.log("receive");
       const data = JSON.parse(e.data);
       if (data.type === "roulette") {
@@ -53,12 +54,12 @@ const Game = () => {
     }
     setNextName(data.nextName()!);
   }, [data]);
-  const spinRoulette = () => {
+  const spinRoulette = async () => {
     const message = {
       type: "roulette",
       name,
     };
-    socket.current.send(JSON.stringify(message));
+    await socket.current.send(JSON.stringify(message));
   };
   const [nextName, setNextName] = useState<string>("");
 
